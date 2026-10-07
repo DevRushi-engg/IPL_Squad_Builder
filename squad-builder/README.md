@@ -76,6 +76,8 @@ The backend runs on port 3001 and securely holds the Gemini API Key.
 ```bash
 cd squad-builder/server
 npm install
+cp .env.example .env
+# add your Gemini key in .env as GEMINI_API_KEY
 node index.js
 ```
 *Health Check:* Open `http://localhost:3001/api/health`
