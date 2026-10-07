@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 // Node 18+ has fetch built-in — no extra package needed
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // ─── Gemini API Config ─────────────────────────────────────
-const GEMINI_API_KEY  = 'AIzaSyDiNblgP4Svr6skm2JJMegsH2MOlSfjxmA';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
 
 // ─── Middleware ────────────────────────────────────────────
@@ -16,6 +17,10 @@ app.use(express.json({ limit: '10mb' }));
 
 // ─── Helper: call Gemini ───────────────────────────────────
 async function callGemini(promptText) {
+  if (!GEMINI_API_KEY) {
+    throw new Error('GEMINI_API_KEY is not set in environment variables');
+  }
+
   const response = await fetch(GEMINI_BASE_URL, {
     method: 'POST',
     headers: {
